@@ -1,8 +1,4 @@
-version: '2'
-
-networks:
-  app-tier:
-    driver: bridge
+version: '3'
 
 services:
   minio:
@@ -14,4 +10,7 @@ services:
       - MINIO_ROOT_USER=sanri
       - MINIO_ROOT_PASSWORD=Xanandra123
     volumes:
-      - /home/sanri/emby/movies:/bitnami/minio/data
+      - minio_data:/data
+
+volumes:
+  minio_data:

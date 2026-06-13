@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Servicio de la Base de Datos (MariaDB)
+  nextcloud-db:
+    image: mariadb:10.11
+    container_name: nextcloud-db
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      # Guardamos los datos de la BD en un volumen de Docker para que no se borren
+      - nextcloud_db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Xanandra123.
+      - MYSQL_PASSWORD=Xanandra123.
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  # Servicio de Nextcloud
+  nextcloud-app:
+    image: nextcloud:latest
+    container_name: nextcloud-app
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - nextcloud-db
+    volumes:
+      # CAMBIA LA RUTA DE LA IZQUIERDA por la carpeta real de tu servidor Linux
+      # Ejemplo: /home/tu_usuario/mi_nube/archivos
+      - /mnt:/var/www/html/data
+      
+      # La configuración y las apps instaladas las dejamos en volúmenes para mayor comodidad
+      - nextcloud_config:/var/www/html/config
+      - nextcloud_apps:/var/www/html/custom_apps
+    environment:
+      - MYSQL_HOST=nextcloud-db
+      - MYSQL_PASSWORD=Xanandra123.
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+volumes:
+  nextcloud_db_data:
+  nextcloud_config:
+  nextcloud_apps:

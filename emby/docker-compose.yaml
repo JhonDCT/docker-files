@@ -1,4 +1,5 @@
 version: "2.3"
+
 services:
   emby:
     image: emby/embyserver
@@ -8,7 +9,7 @@ services:
       - GID=100 # The GID to run emby as (default 2)
       - GIDLIST=100 # A comma-separated list of additional GIDs to run emby as (default: 2)
     volumes:
-      - /home/sanri/emby/movies:/mnt/movies # Media directory
+      - /mnt:/mnt/movies # Media directory
     ports:
       - 8096:8096 # HTTP port
     devices:
